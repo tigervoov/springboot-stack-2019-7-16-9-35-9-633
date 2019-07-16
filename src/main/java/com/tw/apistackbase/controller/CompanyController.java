@@ -62,6 +62,22 @@ public class CompanyController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PutMapping("/{companyId}")
+    public ResponseEntity updateCompany(@PathVariable int companyId @RequestBody Company company){
+        List<Company> specificCompany = this.companyList.stream().filter(item -> item.getCompanyId() == companyId).collect(Collectors.toList());
+        companyList.remove(specificCompany.get(0));
+        companyList.add(company);
+        return ResponseEntity.ok().body(company);
+    }
+    @DeleteMapping("/{companyId}")
+    public ResponseEntity delete(@PathVariable int companyId){
+        List<Company> specificCompany = this.companyList.stream().filter(item -> item.getCompanyId() == companyId).collect(Collectors.toList());
+        if(specificCompany.size()>0){
+            companyList.remove(specificCompany.get(0))
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
 
     public void initData() {
         addCompany();
